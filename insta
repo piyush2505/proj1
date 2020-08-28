@@ -5,19 +5,29 @@ import random
 import shutil
 import os.path
 import re
+from PIL import Image
+
 url = ("https://www.instagram.com")
-username = input("Enter the insta username")
+username = input("Enter the Instagram handle")
 id = url + "/" + username
 html = requests.get(id)
-soup = BeautifulSoup(html.content, 'html.parser')
-data = soup.prettify()
+content = BeautifulSoup(html.content, 'html.parser')
+# print(content)
+data = content.prettify()
 # print(data)
 x = data.find("profile_pic_url_hd") + 21
 remaining_text = data[x:]
-remaining_text_index = remaining_text.find('requested_by_viewer')-3
+remaining_text_index = remaining_text.find('requested_by_viewer') - 3
 string_url = remaining_text[:remaining_text_index]
-response = requests.get(string_url, stream = True)
-# print(string_url)
-file = open("instaimage54.jpg", "wb")
+print(string_url)
+print(type(string_url))
+string_url = string_url.encode().decode("unicode_escape")
+print(string_url)
+print(type(string_url))
+response = requests.get(string_url, stream=True)
+print(response.status_code)
+file = open("image007.jpg", "wb")
 file.write(response.content)
 file.close()
+dp = Image.open(r"C:\Users\piyus\Desktop\python\image007.jpg")
+dp.show()
